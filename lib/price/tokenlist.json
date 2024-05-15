@@ -1,0 +1,58 @@
+{
+    "name": "CoinGecko",
+    "logoURI": "https://static.coingecko.com/s/thumbnail-007177f3eca19695592f0b8b0eabbdae282b54154e1be912285c9034ea6cbaf2.png",
+    "keywords": [
+        "defi"
+    ],
+    "timestamp": "2024-05-07T02:02:57.551+00:00",
+    "tokens": [
+        {
+            "chainId": 1,
+            "address": "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
+            "name": "Uniswap",
+            "symbol": "UNI",
+            "decimals": 18,
+            "logoURI": "https://assets.coingecko.com/coins/images/12504/thumb/uni.jpg?1696512319"
+        },
+        {
+            "chainId": 1,
+            "address": "0x514910771af9ca656af840dff83e8264ecf986ca",
+            "name": "Chainlink",
+            "symbol": "LINK",
+            "decimals": 18,
+            "logoURI": "https://assets.coingecko.com/coins/images/877/thumb/chainlink-new-logo.png?1696502009"
+        },
+        {
+            "chainId": 1,
+            "address": "0x090185f2135308bad17527004364ebcc2d37e5f6",
+            "name": "Spell",
+            "symbol": "SPELL",
+            "decimals": 18,
+            "logoURI": "https://assets.coingecko.com/coins/images/15861/thumb/abracadabra-3.png?1696515477"
+        },
+        {
+            "chainId": 1,
+            "address": "0x5e21d1ee5cf0077b314c381720273ae82378d613",
+            "name": "The Infinite Garden",
+            "symbol": "ETH",
+            "decimals": 18,
+            "logoURI": "https://assets.coingecko.com/coins/images/34540/thumb/film.jpg?1705338132"
+        },
+        {
+            "chainId": 1,
+            "address": "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+            "name": "Basic Attention",
+            "symbol": "BAT",
+            "decimals": 18,
+            "logoURI": "https://assets.coingecko.com/coins/images/677/thumb/basic-attention-token.png?1696501867"
+        },
+        {
+            "chainId": 1,
+            "address": "0x85f138bfee4ef8e540890cfb48f620571d67eda3",
+            "name": "Avalanche  Wormhole ",
+            "symbol": "AVAX",
+            "decimals": 18,
+            "logoURI": "https://assets.coingecko.com/coins/images/22943/thumb/AVAX_wh_small.png?1696522240"
+        }
+    ]
+}
