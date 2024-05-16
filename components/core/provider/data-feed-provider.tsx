@@ -93,7 +93,7 @@ interface DataFeedProviderProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const EditorContext = createContext({
-    updatePrice: (base: string, quote: string) => { },
+    updatePrice: (base: string, quote: string,  from: boolean = true) => { },
     getTotal: (amount: Number, from: boolean = true) => { },
     latestFromData: {} as RoundData,
     latestToData: {} as RoundData

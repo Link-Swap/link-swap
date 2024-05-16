@@ -7,6 +7,7 @@ import { SwapCurrencyProvider } from "@/components/core/provider/currency-select
 import { DataFeedProvider } from "@/components/core/provider/data-feed-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { NavBar } from "@/components/core/nav/navbar";
+import { Toaster } from "@/components/ui/toaster"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -35,6 +36,7 @@ export default function RootLayout({
                 <Web3Provider>
                   <NavBar />
                   {children}
+                  <Toaster />
                 </Web3Provider>
               </SwapCurrencyProvider>
             </DataFeedProvider>

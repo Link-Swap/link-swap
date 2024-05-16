@@ -6,11 +6,12 @@ import { abi } from "../abi/chainlink-functions";
 const getAddress = (chain: string) => {
     switch (chain) {
         case ChainID.BASE_SEPOLIA:
-            return "";
+            return "0xb1a8ED6906bD10895Ae7D96569A0310e47c85Be5";
         case ChainID.ETHEREUM_SEPOLIA:
-            return "0x3fFBab4f55755F1912370fA8f359048016368a18";
+            // return "0x3fFBab4f55755F1912370fA8f359048016368a18";
         case ChainID.AVALANCHE_FUJI:
-            return "0x55B899B762Db70B4Aa7227D95E870bD415eAa41D";
+            // return "0x55B899B762Db70B4Aa7227D95E870bD415eAa41D";
+            return "0x262f7B5cA0C31cB99C0aA71E1Cd8f09c281B8C9d";
         default:
             return "";
     }
@@ -19,7 +20,7 @@ const getAddress = (chain: string) => {
 const getSubscriptionId = (chain: string) => {
     switch (chain) {
         case ChainID.BASE_SEPOLIA:
-            return 0;
+            return 42;
         case ChainID.ETHEREUM_SEPOLIA:
             return 2697;
         case ChainID.AVALANCHE_FUJI:

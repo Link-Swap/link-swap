@@ -7,8 +7,41 @@ import { ThemeToggle } from "@/components/ui/theme"
 
 import { ArrowLeftRight, Menu } from "lucide-react"
 import { ConnectButton } from "@rainbow-me/rainbowkit"
+import {
+    NavigationMenu,
+    NavigationMenuContent,
+    NavigationMenuIndicator,
+    NavigationMenuItem,
+    NavigationMenuLink,
+    NavigationMenuList,
+    NavigationMenuTrigger,
+    NavigationMenuViewport,
+    navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu"
+import React from "react"
+import Link from "next/link"
 
 const title = "LinkSwap"
+const components: { title: string; href: string; description: string }[] = [
+    {
+        title: "CCIP Data Builder",
+        href: "/builder",
+        description:
+            "Create and validate CCIP data for cross-chain transfers and swaps.",
+    },
+    {
+        title: "Oracle Simulator",
+        href: "/simulate",
+        description:
+            "Pass and simulate CCIP data to validate Chainlink Functions for CCIP transfer or swap.",
+    },
+    {
+        title: "Faucet",
+        href: "/faucet",
+        description:
+            "Drip and Test token for playing with LinkSwap.",
+    },
+]
 
 interface NavBarProps extends React.HTMLAttributes<HTMLDivElement> { }
 
@@ -28,7 +61,9 @@ export const NavBar = ({ }: NavBarProps) => {
                             {title}
                         </span>
                     </a>
-                    <nav className="hidden gap-6 md:flex"></nav>
+                    <nav className="hidden gap-6 md:flex">
+                        <NavMenu />
+                    </nav>
                     <button
                         className="flex items-center space-x-2 md:hidden"
                         onClick={handleNavBar}
@@ -44,6 +79,9 @@ export const NavBar = ({ }: NavBarProps) => {
                     >
                         <div className="relative z-20 grid gap-6 rounded-md bg-popover p-4 text-popover-foreground shadow-md">
                             <nav className="grid grid-flow-row auto-rows-max text-sm space-y-4">
+                                <nav>
+                                    <NavMenu />
+                                </nav>
                                 <div className="flex space-x-4">
                                     <ConnectButton />
                                     <ThemeToggle />
@@ -71,3 +109,65 @@ export const NavBar = ({ }: NavBarProps) => {
         </div>
     )
 }
+
+const NavMenu = () => {
+    return <NavigationMenu>
+        <NavigationMenuList>
+            <NavigationMenuItem>
+                <Link href="/" legacyBehavior passHref>
+                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                        Transfer
+                    </NavigationMenuLink>
+                </Link>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+                <Link href="/swap" legacyBehavior passHref>
+                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                        Swap
+                    </NavigationMenuLink>
+                </Link>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+                <NavigationMenuTrigger>Toolings</NavigationMenuTrigger>
+                <NavigationMenuContent>
+                    <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                        {components.map((component) => (
+                            <ListItem
+                                key={component.title}
+                                title={component.title}
+                                href={component.href}
+                            >
+                                {component.description}
+                            </ListItem>
+                        ))}
+                    </ul>
+                </NavigationMenuContent>
+            </NavigationMenuItem>
+        </NavigationMenuList>
+    </NavigationMenu>
+}
+const ListItem = React.forwardRef<
+    React.ElementRef<"a">,
+    React.ComponentPropsWithoutRef<"a">
+>(({ className, title, children, ...props }, ref) => {
+    return (
+        <li>
+            <NavigationMenuLink asChild>
+                <a
+                    ref={ref}
+                    className={cn(
+                        "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+                        className
+                    )}
+                    {...props}
+                >
+                    <div className="text-sm font-medium leading-none">{title}</div>
+                    <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                        {children}
+                    </p>
+                </a>
+            </NavigationMenuLink>
+        </li>
+    )
+})
+ListItem.displayName = "ListItem"

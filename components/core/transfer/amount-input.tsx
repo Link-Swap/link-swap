@@ -2,7 +2,7 @@
 
 import { Input } from "@/components/ui/input"
 import { useDataFeed } from "../provider/data-feed-provider"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSwapCurrency } from "../provider/currency-select-provider";
 
 interface AmountInputProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -17,26 +17,36 @@ export function AmountInput({
     from = true,
 }: AmountInputProps) {
     const { getTotal } = useDataFeed();
-    const { fromValue, toValue, setFromValue, setToValue } = useSwapCurrency()
+    const { toCurrency, setFromValue, setToValue } = useSwapCurrency()
     const [value, setValue] = useState<string>("0.0")
 
     const handleOnChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        setValue(e.target.value)
+        await updatePrice(e.target.value)
+    }
+
+    const updatePrice = async (value: string) => {
+        setValue(value)
 
         // Typically if transfer, then the to is disabled
-        setFromValue(Number(e.target.value))
+        setFromValue(Number(value))
         if (type === "transfer") {
-            setToValue(Number(e.target.value))
+            setToValue(Number(value))
         }
-        await getTotal(Number(e.target.value), from)
+        await getTotal(Number(value), from)
     }
+
+    useEffect(() => {
+        (async () => {
+            await updatePrice(value)
+        })()
+    }, [toCurrency])
 
     return (
         <Input type="number"
             disabled={disabled}
             onChange={handleOnChange}
             min={0}
-            value={from ? fromValue : toValue}
+            value={value}
             className="p-[16px] rounded-lg font-bold text-xl sm:text-2xl md:text-3xl lg:text-4xl border-none shadow-none"
             placeholder="0.0" />
     )

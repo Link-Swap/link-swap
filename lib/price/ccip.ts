@@ -30,7 +30,7 @@ export const chains: Record<string, CCIP> = {
             ],
         },
         linkAddress: "0x0b9d5D9136855f6FEc3c0993feE6E9CE8a297846",
-        ccipContract: "0x88e1568b9A55e8597176Ed3908a5Ac639e438d5f",
+        ccipContract: "0xC15A22DBf36aD05b9533D5645F0e15F952F7E71D",
     },
     [ChainID.BNB_TESTNET]: {
         ccip: {
@@ -38,7 +38,7 @@ export const chains: Record<string, CCIP> = {
             chainSelector: "13264668187771770619",
         },
         linkAddress: "0x84b9B910527Ad5C03A9Ca831909E21e236EA7b06",
-        ccipContract: "0xA327f039b95703fa84D507e7338FB680D2BEf447",
+        ccipContract: "",
     },
     [ChainID.ETHEREUM_SEPOLIA]: {
         ccip: {
@@ -54,7 +54,7 @@ export const chains: Record<string, CCIP> = {
             ],
         },
         linkAddress: "0x779877a7b0d9e8603169ddbd7836e478b4624789",
-        ccipContract: "0x125f1c9e09531c81f5b78131409dab56aca0191d",
+        ccipContract: "",
     },
     [ChainID.ARBITRUM_SEPOLIA]: {
         ccip: {
@@ -86,7 +86,7 @@ export const chains: Record<string, CCIP> = {
             ],
         },
         linkAddress: "0xE4aB69C077896252FAFBD49EFD26B5D171A32410",
-        ccipContract: "",
+        ccipContract: "0x18b5500A6a66698275aE0286e57aa03e0B2cF49E",
     },
     [ChainID.KROMA_SEPOLIA]: {
         ccip: {

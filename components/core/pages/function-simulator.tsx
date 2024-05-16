@@ -5,10 +5,9 @@ import { Label } from "@/components/core/components/label";
 import { Input } from "@/components/core/components/input";
 import { Button } from "@/components/ui/button";
 import { ChainID, getNetworkNameFromChainID } from "@/lib/chains";
-import { LinkSwapToken } from "@/lib/contracts/use-contracts/link-swap-token";
 import { getMetamaskClient } from "@/lib/evm/client";
 import { CCIPData, CCIPMessageParserContract } from "@/lib/contracts/use-contracts/ccip-data-parser";
-import { ChainSelect } from "../transfer/chain-select";
+import { ChainSelect } from "@/components/core/components/chain-select";
 import { ReturnType, decodeResult } from "@/lib/decode";
 import { FunctionsConsumerContract } from "@/lib/contracts/use-contracts/chainlink-functions";
 
@@ -59,44 +58,6 @@ export function FunctionSimulator({ }: FunctionSimulatorProps) {
         setCCIPData(ccipData);
 
         console.log(data, ccipData)
-    }
-
-    const handleFaucet = async () => {
-        const client = await getMetamaskClient();
-        if (!client.account) {
-            console.log("No account please connect to metamask", client)
-            const accounts = await client.requestAddresses() as any[]
-            client.account = accounts[0] as any
-            // return;
-        }
-
-        console.log("ChainId: ", client.chain.id)
-        const chainId = await client.getChainId();
-        const token = new LinkSwapToken({
-            chain: chainId.toString(),
-            client: { public: client, wallet: client, }
-        })
-        const response = await token.faucet();
-        console.log("Response: ", response)
-    }
-
-    const handleMint = async () => {
-        const client = await getMetamaskClient();
-        if (!client.account) {
-            console.log("No account please connect to metamask", client)
-            const accounts = await client.requestAddresses() as any[]
-            client.account = accounts[0] as any
-            // return;
-        }
-
-        console.log("ChainId: ", client.chain.id)
-        const chainId = await client.getChainId();
-        const token = new LinkSwapToken({
-            chain: chainId.toString(),
-            client: { public: client, wallet: client, }
-        })
-        const response = await token.mint("0x3F57090017Bcb972C27C0e673f58813B7F074F4A", "1000000000000000000000000000");
-        console.log("Response: ", response)
     }
 
     const [sourceChain, setSourceChain] = useState<string>(ChainID.ETHEREUM_SEPOLIA)
@@ -155,9 +116,6 @@ export function FunctionSimulator({ }: FunctionSimulatorProps) {
             <Button onClick={handleOracleCall} disabled={simulateDisable}>
                 {simulateDisable ? "Stimulating..." : "Stimulate"}
             </Button>
-
-            <Button onClick={handleFaucet}>Mint</Button>
-            <Button onClick={handleMint}>Mint</Button>
 
             <div>
                 <Label message="Time Lapse" className="my-8" />

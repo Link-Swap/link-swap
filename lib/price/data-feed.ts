@@ -57,6 +57,7 @@ export const getChainIdFromBlockchainName = (name: string): string => {
         case "Ethereum":
             return ChainID.ETHEREUM_MAINNET
         case "Polygon":
+        case "Matic":
             return ChainID.POLYGON_MAINNET
         case "Fantom":
             return ChainID.FANTOM_MAINNET

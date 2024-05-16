@@ -1,11 +1,16 @@
 "use client"
 
+import { TokenInfoPlus } from "@/lib/contracts/use-contracts/token-list"
 import React, { createContext, useContext, useState } from "react"
 
 export const SwapCurrencyProvider = ({ children }: SwapCurrencyProviderProps) => {
     const [type, setType] = useState<"swap" | "transfer">("transfer")
-    const [fromCurrency, setFromCurrency] = useState<string>("USDC")
-    const [toCurrency, setToCurrency] = useState<string>("USD")
+    const [fromCurrency, setFromCurrency] = useState<TokenInfoPlus>({
+
+    } as TokenInfoPlus)
+    const [toCurrency, setToCurrency] = useState<TokenInfoPlus>({
+
+    } as TokenInfoPlus)
 
     const [fromValue, setFromValue] = useState<number>(0)
     const [toValue, setToValue] = useState<number>(0)
@@ -38,10 +43,10 @@ interface SwapCurrencyProviderProps extends React.HTMLAttributes<HTMLDivElement>
 export const EditorContext = createContext({
     type: "transfer",
     setType: (type: "swap" | "transfer") => { },
-    fromCurrency: "",
-    setFromCurrency: (currency: string) => { },
-    toCurrency: "",
-    setToCurrency: (currency: string) => { },
+    fromCurrency: {} as TokenInfoPlus,
+    setFromCurrency: (currency: TokenInfoPlus) => { },
+    toCurrency: {} as TokenInfoPlus,
+    setToCurrency: (currency: TokenInfoPlus) => { },
 
     fromValue: 0,
     setFromValue: (value: number) => { },

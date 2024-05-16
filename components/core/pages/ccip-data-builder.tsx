@@ -11,7 +11,7 @@ import Image from "next/image";
 import { getTokenIcon } from "@/lib/coins/main";
 import { cn } from "@/lib/utils";
 import { CopyText } from "../components/copy-text";
-import { ChainSelect } from "../transfer/chain-select";
+import { ChainSelect } from "../components/chain-select";
 import { ChainID } from "@/lib/chains";
 import {
     HoverCard,

@@ -54,6 +54,18 @@ export class LinkSwapTokenContract {
     async mint(address: string, amount: string) {
         return await this.contract.write.mint([address, amount]);
     }
+
+    async allowance(owner: string, spender: string) {
+        return await this.contract.read.allowance([owner, spender]) as BigInt;
+    }
+
+    async approve(spender: string, value: string) {
+        return await this.contract.write.approve([spender, value]);
+    }
+
+    async balanceOf(account: string) {
+        return await this.contract.read.balanceOf([account]) as BigInt;
+    }
 }
 
 
