@@ -13,6 +13,10 @@ export const getLinkSwapAddress = (chain: string) => {
             return "0x608D532b14A1070577f01288e5FF3acC5E7F4798";
         case ChainID.POLYGON_AMOY:
             return "0xfeB362F2148F1303ea6Bf026d32071EA295e25ac";
+        case ChainID.OPTIMISM_SEPOLIA:
+            return "0xfeB362F2148F1303ea6Bf026d32071EA295e25ac";
+        case ChainID.ARBITRUM_SEPOLIA:
+            return "0xfeB362F2148F1303ea6Bf026d32071EA295e25ac";
         default:
             return "";
     }

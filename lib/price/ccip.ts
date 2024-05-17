@@ -30,7 +30,7 @@ export const chains: Record<string, CCIP> = {
             ],
         },
         linkAddress: "0x0b9d5D9136855f6FEc3c0993feE6E9CE8a297846",
-        ccipContract: "0xC15A22DBf36aD05b9533D5645F0e15F952F7E71D",
+        ccipContract: "0xDbBe28E3f82cb7FE549759f4365545Aaf4d216e8",
     },
     [ChainID.BNB_TESTNET]: {
         ccip: {
@@ -142,7 +142,7 @@ export const chains: Record<string, CCIP> = {
             ],
         },
         linkAddress: "0x0Fd9e8d3aF1aaee056EB9e802c3A762a667b1904",
-        ccipContract: "",
+        ccipContract: "0xD8fb42CdFE99e2f448c652Eb8d1DF33618a9ee3C",
     },
 }
 

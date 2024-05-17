@@ -1,17 +1,22 @@
 import { ChainID } from "@/lib/chains";
-import { getClient } from "@/lib/evm/client";
+import { getClient, getMetamaskClient } from "@/lib/evm/client";
 import { getContract } from "viem";
 import { abi } from "../abi/chainlink-functions";
 
 const getAddress = (chain: string) => {
     switch (chain) {
-        case ChainID.BASE_SEPOLIA:
-            return "0xb1a8ED6906bD10895Ae7D96569A0310e47c85Be5";
-        case ChainID.ETHEREUM_SEPOLIA:
-            // return "0x3fFBab4f55755F1912370fA8f359048016368a18";
         case ChainID.AVALANCHE_FUJI:
-            // return "0x55B899B762Db70B4Aa7227D95E870bD415eAa41D";
-            return "0x262f7B5cA0C31cB99C0aA71E1Cd8f09c281B8C9d";
+            return "0x0f5be58cd502e731803db6e604114ee9c20f854d";
+        case ChainID.BASE_SEPOLIA:
+            return "0x6aF056A98F8E141fBa40DD89FFb74aA6e9f05355";
+        case ChainID.ETHEREUM_SEPOLIA:
+            return "";
+        case ChainID.POLYGON_AMOY:
+            return "0x26EF677d60e6715bD052eB5BdB080A8E033e1C17";
+        case ChainID.OPTIMISM_SEPOLIA:
+            return "";
+        case ChainID.ARBITRUM_SEPOLIA:
+            return "";
         default:
             return "";
     }
@@ -25,10 +30,15 @@ const getSubscriptionId = (chain: string) => {
             return 2697;
         case ChainID.AVALANCHE_FUJI:
             return 8064;
+        case ChainID.POLYGON_AMOY:
+            return 202;
         default:
             return 0;
     }
 }
+
+const callbackGasLimit = 300_000;
+// const callbackGasLimit = 400_000;
 
 export class FunctionsConsumerContract {
     contract: any;
@@ -56,11 +66,9 @@ export class FunctionsConsumerContract {
 
     async sendRequest(ccipData: string, destinationChain: string) {
         const args = [ccipData, destinationChain];
-        const callbackGasLimit = 300_000;
 
         const response = await fetch("/api/source");
         const source = await response.text();
-        console.log(source);
 
         console.log("Sending request to Chainlink node", ccipData, destinationChain);
         return await this.contract.write.sendRequest([
@@ -72,6 +80,46 @@ export class FunctionsConsumerContract {
             [], // bytesArgs - arguments can be encoded off-chain to bytes.
             this.subscriptionId,
             callbackGasLimit,
-        ]);
+        ], {
+            account: this.client.wallet.account.address,
+            gas: 3_000_000
+        });
+    }
+
+    async sendRequestEstimateGas(ccipData: string, destinationChain: string) {
+        // const c = await getMetamaskClient();
+        // const contract = getContract({
+        //     address: this.contract.address,
+        //     abi: this.contract.abi,
+        //     client: { wallet: c },
+        // })
+        // contract.write.sendRequest([], {
+        //     account: this.client.account.address,
+        //     gas: 3_000_000
+        // });
+        const publicClient = getClient(this.chain);
+        const args = [ccipData, destinationChain];
+
+        const response = await fetch("/api/source");
+        const source = await response.text();
+
+        const gas = await publicClient.estimateContractGas({
+            address: this.contract.address,
+            abi: this.contract.abi,
+            functionName: 'sendRequest',
+            args: [
+                source, // source
+                "0x", // user hosted secrets - encryptedSecretsUrls - empFty in this example
+                0, // don hosted secrets - slot ID - empty in this example
+                0, // don hosted secrets - version - empty in this example
+                args,
+                [], // bytesArgs - arguments can be encoded off-chain to bytes.
+                this.subscriptionId,
+                callbackGasLimit,
+            ],
+            account: "0xa327f039b95703fa84d507e7338fb680d2bef447"
+        })
+
+        return gas
     }
 }

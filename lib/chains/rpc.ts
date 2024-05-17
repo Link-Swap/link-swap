@@ -135,7 +135,7 @@ const data: { [key: string]: string } = {
     [ChainID.ETHEREUM_CLASSIC_TESTNET]: "https://rpc.mordor.etccooperative.org",
     [ChainID.STABILITY_MAINNET]: "https://gtn.stabilityprotocol.com",
     [ChainID.STABILITY_TESTNET]: "https://free.testnet.stabilityprotocol.com",
-    [ChainID.ARBITRUM_SEPOLIA]: "https://rpc-amoy.polygon.technology",
+    [ChainID.ARBITRUM_SEPOLIA]: "https://arbitrum-sepolia.drpc.org",
     [ChainID.KROMA_MAINNET]: "https://api.kroma.network",
     [ChainID.KROMA_SEPOLIA]: "https://api.sepolia.kroma.network",
     [ChainID.POLYGON_AMOY]: "https://rpc-amoy.polygon.technology",

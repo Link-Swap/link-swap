@@ -9,12 +9,15 @@ const getAddress = (chain: string) => {
         case ChainID.AVALANCHE_FUJI:
             return "0xa1f384C7C4870cB9Ce83bf506029a6258F223B9b";
         case ChainID.ETHEREUM_SEPOLIA:
-            // return "0xE9Ea701e7F3e85b4A724bD049Bc5305147c7A23b"; // Old
             return "0x755261cd44Bc905CaB714d349f41b10f6Fb5a40e";
         case ChainID.BASE_SEPOLIA:
             return "0xc22dDc2EFeD83D99410b9296058401B2f9A4a177";
         case ChainID.POLYGON_AMOY:
             return "0xA96Ebd09F44f1ca1B4d5897FF98eDD1EA9D90590";
+        case ChainID.OPTIMISM_SEPOLIA:
+            return "0xA96Ebd09F44f1ca1B4d5897FF98eDD1EA9D90590";
+        case ChainID.ARBITRUM_SEPOLIA:
+            return "0xD9F812433Dd5ce28f7b7aD7b8FF189B65127C847";
         default:
             return "";
     }

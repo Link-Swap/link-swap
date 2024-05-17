@@ -10,14 +10,15 @@ import { getNetworkNameFromChainID } from "@/lib/chains"
 import { TransferCard } from "./transfer-card"
 import { LinkSwapTokenListContract } from "@/lib/contracts/use-contracts/token-list"
 import { LinkSwapTokenContract } from "@/lib/contracts/use-contracts/link-swap-token"
-import { getMetamaskClient } from "@/lib/evm/client"
+import { getClient, getMetamaskClient } from "@/lib/evm/client"
 import { Label } from "../components/label"
 import { Input } from "../components/input"
-import { isAddress } from "viem"
+import { decodeAbiParameters, isAddress, parseAbiParameters } from "viem"
 import { getCCIPContract } from "@/lib/price/ccip"
 import { useToast } from "@/components/ui/use-toast"
 import { FunctionsConsumerContract } from "@/lib/contracts/use-contracts/chainlink-functions"
 import { CCIPMessageParserContract } from "@/lib/contracts/use-contracts/ccip-data-parser"
+import { abi } from "@/lib/contracts/abi/token-transfer"
 
 interface TransferDashboardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
@@ -147,16 +148,60 @@ export function TransferDashboard({
             client: { public: client, wallet: client, },
         })
 
+        const gas = await consumer.sendRequestEstimateGas(ccipPackedData, toChain);
+        const ccipGas = await CCIPEstimateGas();
+
+        console.log("Estimated Gas: ", gas, ccipGas)
+        console.log("Total Gas: ", gas + ccipGas)
+
         const tx = await consumer.sendRequest(ccipPackedData, toChain);
         console.log("Response: ", tx)
         toast({
             title: "Success",
             description: `Approved: ${tx}`,
         })
+
         //#endregion
     }
+
+    const CCIPEstimateGas = async () => {
+        const fromChain = chainId?.toString() || "";
+        const client = getClient(fromChain);
+
+        const gas = await client.estimateContractGas({
+            address: "0xC15A22DBf36aD05b9533D5645F0e15F952F7E71D",
+            abi: abi,
+            functionName: 'sendMessagePayLINK',
+            args: ["10344971235874465080",
+                "0x18b5500A6a66698275aE0286e57aa03e0B2cF49E",
+                "1766993214942117419875118800682341442235512937620834629515197313842082887",
+                "0xA327f039b95703fa84D507e7338FB680D2BEf447",
+            ],
+            account: address,
+        })
+
+        return gas;
+    }
+
+    const play = async () => {
+        // const data = "000100056bc75e2d63100000a327f039b95703fa84d507e7338fb680d2bef4470000000000000000000000000000000000000000000000000000000000000060000000000000000000000000a327f039b95703fa84d507e7338fb680d2bef4470000000000000000000000000000000000000000000000000000000000000044323135383236393938363837363734363732343530313634303837303830343235353736373837393536373330353737393838353534303832353536323736383336313300000000000000000000000000000000000000000000000000000000"
+        const data = "02e3723d3a4385b4b74f419ce76668987bf85de79cb16a51b9c169b1e4c95e5b";
+
+        const values = decodeAbiParameters(
+            // parseAbiParameters('uint256 ccipData, bytes ccipArgs, address payer'),
+            parseAbiParameters('bytes32 message'),
+            `0x${data}`
+        )
+
+        console.log(values)
+    }
+
     return (
         <div className="rounded-lg">
+
+            {/* <Button onClick={play}>
+                Play
+            </Button> */}
             <div className="flex flex-col space-y-2">
                 <Label message="Reciever" className="" />
                 <Input placeholder="0x" onChange={(e) => setReceiver(e.target.value)}

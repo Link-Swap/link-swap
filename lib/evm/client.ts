@@ -1,5 +1,5 @@
 import { createPublicClient, createWalletClient, http, custom } from 'viem'
-import { avalancheFuji, baseSepolia, mainnet, sepolia, polygonMumbai, polygon, bscTestnet, celoAlfajores } from 'viem/chains'
+import { avalancheFuji, baseSepolia, mainnet, sepolia, polygonMumbai, polygon, bscTestnet, celoAlfajores, polygonAmoy, arbitrumSepolia, optimismSepolia } from 'viem/chains'
 import { EthereumProvider } from '@walletconnect/ethereum-provider'
 import { ChainID, getRPC } from '../chains'
 
@@ -18,10 +18,16 @@ const getVeimChain = (chain: string) => {
             return polygon;
         case ChainID.POLYGON_MUMBAI:
             return polygonMumbai;
+        case ChainID.POLYGON_AMOY:
+            return polygonAmoy;
         case ChainID.BNB_TESTNET:
             return bscTestnet;
         case ChainID.CELO_ALFAJORES:
             return celoAlfajores;
+        case ChainID.ARBITRUM_SEPOLIA:
+            return arbitrumSepolia;
+        case ChainID.OPTIMISM_SEPOLIA:
+            return optimismSepolia;
         default:
             return undefined
     }
