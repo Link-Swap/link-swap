@@ -148,11 +148,11 @@ export function TransferDashboard({
             client: { public: client, wallet: client, },
         })
 
-        const gas = await consumer.sendRequestEstimateGas(ccipPackedData, toChain);
-        const ccipGas = await CCIPEstimateGas();
+        // const gas = await consumer.sendRequestEstimateGas(ccipPackedData, toChain);
+        // const ccipGas = await CCIPEstimateGas();
 
-        console.log("Estimated Gas: ", gas, ccipGas)
-        console.log("Total Gas: ", gas + ccipGas)
+        // console.log("Estimated Gas: ", gas, ccipGas)
+        // console.log("Total Gas: ", gas + ccipGas)
 
         const tx = await consumer.sendRequest(ccipPackedData, toChain);
         console.log("Response: ", tx)
@@ -185,7 +185,7 @@ export function TransferDashboard({
 
     const play = async () => {
         // const data = "000100056bc75e2d63100000a327f039b95703fa84d507e7338fb680d2bef4470000000000000000000000000000000000000000000000000000000000000060000000000000000000000000a327f039b95703fa84d507e7338fb680d2bef4470000000000000000000000000000000000000000000000000000000000000044323135383236393938363837363734363732343530313634303837303830343235353736373837393536373330353737393838353534303832353536323736383336313300000000000000000000000000000000000000000000000000000000"
-        const data = "02e3723d3a4385b4b74f419ce76668987bf85de79cb16a51b9c169b1e4c95e5b";
+        const data = "a77f0758bc576fd6358c7ca80efe34e54b5448288159ba9edd3ce3657e28439c";
 
         const values = decodeAbiParameters(
             // parseAbiParameters('uint256 ccipData, bytes ccipArgs, address payer'),
@@ -199,9 +199,9 @@ export function TransferDashboard({
     return (
         <div className="rounded-lg">
 
-            {/* <Button onClick={play}>
+            <Button onClick={play}>
                 Play
-            </Button> */}
+            </Button>
             <div className="flex flex-col space-y-2">
                 <Label message="Reciever" className="" />
                 <Input placeholder="0x" onChange={(e) => setReceiver(e.target.value)}

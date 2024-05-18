@@ -13,6 +13,11 @@ interface CCIP {
     }
     linkAddress: string;
     ccipContract?: string;
+    automation?: {
+        upkeeper: string;
+        link: string;
+        active: boolean;
+    }
 }
 
 export const chains: Record<string, CCIP> = {
@@ -31,6 +36,11 @@ export const chains: Record<string, CCIP> = {
         },
         linkAddress: "0x0b9d5D9136855f6FEc3c0993feE6E9CE8a297846",
         ccipContract: "0xDbBe28E3f82cb7FE549759f4365545Aaf4d216e8",
+        automation: {
+            upkeeper: "0x76baB8bE3658942054Af2EeaDC7DB5975E00E7eA",
+            link: "https://automation.chain.link/fuji/32708311151030418577197145235417177243639252957486060249064829418775900977903",
+            active: true,
+        }
     },
     [ChainID.BNB_TESTNET]: {
         ccip: {
@@ -70,7 +80,7 @@ export const chains: Record<string, CCIP> = {
             ],
         },
         linkAddress: "0xb1D4538B4571d411F07960EF2838Ce337FE1E80E",
-        ccipContract: "",
+        ccipContract: "0x11f00b9fcefc58cdFe2FFD311c4aB490d964f3C0",
     },
     [ChainID.BASE_SEPOLIA]: {
         ccip: {
@@ -110,7 +120,12 @@ export const chains: Record<string, CCIP> = {
             ],
         },
         linkAddress: "0xE4aB69C077896252FAFBD49EFD26B5D171A32410",
-        ccipContract: "",
+        ccipContract: "0x11f00b9fcefc58cdFe2FFD311c4aB490d964f3C0",
+        automation: {
+            upkeeper: "0x0dF53a10843657242b8276FFd6260d5fC8c0a55C",
+            link: "https://automation.chain.link/optimism-sepolia/6130101799757351563254093353829054416896800108017164536724838508404442701659",
+            active: true,
+        }
     },
     [ChainID.WEMIX_TESTNET]: {
         ccip: {

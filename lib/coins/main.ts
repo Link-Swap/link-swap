@@ -33,6 +33,11 @@ export const tokens: Record<string, any> = {
         name: "Basic Attention Token",
         image: "/icons/bat.svg",
         addresses: {}
+    },
+    ["UNI"]: {
+        name: "Uniswap",
+        image: "/icons/uni.svg",
+        addresses: {}
     }
 }
 

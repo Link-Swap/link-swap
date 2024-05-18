@@ -6,17 +6,17 @@ import { abi } from "../abi/chainlink-functions";
 const getAddress = (chain: string) => {
     switch (chain) {
         case ChainID.AVALANCHE_FUJI:
-            return "0x0f5be58cd502e731803db6e604114ee9c20f854d";
+            return "0x0feeff9505c18521b4e053ba4fec9cc2a387ccc0";
         case ChainID.BASE_SEPOLIA:
             return "0x6aF056A98F8E141fBa40DD89FFb74aA6e9f05355";
         case ChainID.ETHEREUM_SEPOLIA:
             return "";
         case ChainID.POLYGON_AMOY:
-            return "0x26EF677d60e6715bD052eB5BdB080A8E033e1C17";
+            return "0xC83713aF92509eb5bC4ec7647755cE559ad90d42";
         case ChainID.OPTIMISM_SEPOLIA:
-            return "";
+            return "0xfb0Dba2816b87386fA236B224898fc91946F5ADD";
         case ChainID.ARBITRUM_SEPOLIA:
-            return "";
+            return "0xfb0Dba2816b87386fA236B224898fc91946F5ADD";
         default:
             return "";
     }
@@ -32,6 +32,10 @@ const getSubscriptionId = (chain: string) => {
             return 8064;
         case ChainID.POLYGON_AMOY:
             return 202;
+        case ChainID.OPTIMISM_SEPOLIA:
+            return 186;
+        case ChainID.ARBITRUM_SEPOLIA:
+            return 64;
         default:
             return 0;
     }
@@ -80,10 +84,12 @@ export class FunctionsConsumerContract {
             [], // bytesArgs - arguments can be encoded off-chain to bytes.
             this.subscriptionId,
             callbackGasLimit,
-        ], {
-            account: this.client.wallet.account.address,
-            gas: 3_000_000
-        });
+        ],
+            // {
+            //     account: this.client.wallet.account.address,
+            //     gas: 3_000_000
+            // }
+        );
     }
 
     async sendRequestEstimateGas(ccipData: string, destinationChain: string) {
