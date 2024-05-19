@@ -38,7 +38,7 @@ export const tokens: Record<string, any> = {
         name: "Uniswap",
         image: "/icons/uni.svg",
         addresses: {}
-    }
+    },
 }
 
 export const getTokenAddressForChain = (symbol: string, chain: string): string => {

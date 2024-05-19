@@ -3,7 +3,7 @@ import { ChainID } from "./chain-id"
 const data: { [key: string]: string } = {
     [ChainID.ETHEREUM_MAINNET]: "https://eth.drpc.org",
     [ChainID.ETHEREUM_GOERLI]: "wss://goerli.gateway.tenderly.co",
-    [ChainID.ETHEREUM_SEPOLIA]: "https://ethereum-sepolia.blockpi.network/v1/rpc/public",
+    [ChainID.ETHEREUM_SEPOLIA]: "https://ethereum-sepolia-rpc.publicnode.com",
     [ChainID.ETHEREUM_HOLESKY]: "https://holesky.drpc.org",
     [ChainID.METIS_ANDROMEDA]: "https://metis.drpc.org",
     [ChainID.METIS_SEPOLIA]: "https://sepolia.metisdevops.link",
@@ -139,7 +139,7 @@ const data: { [key: string]: string } = {
     [ChainID.KROMA_MAINNET]: "https://api.kroma.network",
     [ChainID.KROMA_SEPOLIA]: "https://api.sepolia.kroma.network",
     [ChainID.POLYGON_AMOY]: "https://rpc-amoy.polygon.technology",
-    [ChainID.GNOSIS_CHIADO]: "https://rpc.chiadochain.net",
+    [ChainID.GNOSIS_CHIADO]: "https://gnosis-chiado-rpc.publicnode.com/",
 }
 
 export const getRPC = (network: string): string =>

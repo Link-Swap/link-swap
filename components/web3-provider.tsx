@@ -23,6 +23,7 @@ import {
     bscTestnet,
     arbitrumSepolia,
     optimismSepolia,
+    celoAlfajores,
 } from 'wagmi/chains';
 import {
     QueryClientProvider,
@@ -35,7 +36,8 @@ interface Web3ProviderProps extends React.HTMLAttributes<HTMLDivElement> {
 const config = getDefaultConfig({
     appName: 'linkswap',
     projectId: 'a1b35841e59f1b3f83c5a35d6f6c1824',
-    chains: [mainnet, sepolia, baseSepolia, avalancheFuji, polygonAmoy, bscTestnet, arbitrumSepolia, optimismSepolia, gnosisChiado],
+    chains: [mainnet, sepolia, baseSepolia, avalancheFuji, polygonAmoy,
+        bscTestnet, arbitrumSepolia, optimismSepolia, gnosisChiado, celoAlfajores],
     ssr: true, // If your dApp uses server side rendering (SSR)
 });
 

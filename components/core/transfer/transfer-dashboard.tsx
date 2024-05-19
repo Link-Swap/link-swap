@@ -13,8 +13,8 @@ import { LinkSwapTokenContract } from "@/lib/contracts/use-contracts/link-swap-t
 import { getClient, getMetamaskClient } from "@/lib/evm/client"
 import { Label } from "../components/label"
 import { Input } from "../components/input"
-import { decodeAbiParameters, isAddress, parseAbiParameters } from "viem"
-import { getCCIPContract, hasUpkeeper } from "@/lib/price/ccip"
+import { decodeAbiParameters, isAddress, parseAbiItem, parseAbiParameters } from "viem"
+import { getCCIPContract, getUpKeeper, hasUpkeeper } from "@/lib/price/ccip"
 import { useToast } from "@/components/ui/use-toast"
 import { FunctionsConsumerContract } from "@/lib/contracts/use-contracts/chainlink-functions"
 import { CCIPMessageParserContract } from "@/lib/contracts/use-contracts/ccip-data-parser"
@@ -27,7 +27,7 @@ import { ArrowLeft, ArrowRight, ArrowUpLeftFromSquareIcon, CircleDollarSign } fr
 import { CopyText } from "../components/copy-text"
 import { deployCCIPContract } from "@/lib/scripts/0-deploy-contracts"
 import { setupSelectors } from "@/lib/scripts/1-setup-selectors"
-import { AlertDestructive } from "../components/alert-desctructive"
+import { AlertBanner } from "../components/alerts"
 
 interface TransferDashboardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
@@ -244,6 +244,19 @@ export function TransferDashboard({
             description: `Approved: ${tx}`,
         })
 
+        const upkeeper = getUpKeeper(fromChain) as `0x${string}`
+        console.log("Watching for tx: ", upkeeper)
+        setReceipt("Please wait for the transaction to be confirmed. This may take a few seconds.")
+        const unwatch = publicClient.watchEvent({
+            address: upkeeper,
+            event: parseAbiItem('event CountedBy(address indexed msgSender, bytes32 messageId)'),
+            onLogs: logs => {
+                const ccipLog = logs.filter(log => JSON.stringify(log.args.msgSender === address)).pop()
+                setReceipt(ccipLog?.args?.messageId?.toString() || "Unknown Transaction, See CCIP Explorer for more details")
+                unwatch()
+            }
+        })
+
         //#endregion
     }
 
@@ -267,30 +280,49 @@ export function TransferDashboard({
     }
 
     const play = async () => {
+
+        //#region Event Decoder
         // const data = "000100056bc75e2d63100000a327f039b95703fa84d507e7338fb680d2bef4470000000000000000000000000000000000000000000000000000000000000060000000000000000000000000a327f039b95703fa84d507e7338fb680d2bef4470000000000000000000000000000000000000000000000000000000000000044323135383236393938363837363734363732343530313634303837303830343235353736373837393536373330353737393838353534303832353536323736383336313300000000000000000000000000000000000000000000000000000000"
         // const data = "de411e866e0d27ce0f84793b395efea6cd48993ca8e26a008e118e8fdae1ac1d";
-
         // const values = decodeAbiParameters(
         //     // parseAbiParameters('uint256 ccipData, bytes ccipArgs, address payer'),
         //     parseAbiParameters('bytes32 message'),
         //     `0x${data}`
         // )
-
         // console.log(values)
+        //#endregion
 
         // await deployCCIPContract(ChainID.POLYGON_AMOY)
-        await setupSelectors(ChainID.BASE_SEPOLIA)
-        await connectContracts(ChainID.BASE_SEPOLIA)
+        const chains = [
+            // ChainID.AVALANCHE_FUJI,
+            // ChainID.POLYGON_AMOY,
+            // ChainID.ETHEREUM_SEPOLIA,
+            // ChainID.BASE_SEPOLIA,
+            // ChainID.OPTIMISM_SEPOLIA,
+            // ChainID.ARBITRUM_SEPOLIA,
+            // ChainID.BNB_TESTNET,
+            // ChainID.GNOSIS_CHIADO,
+            ChainID.CELO_ALFAJORES,
+        ]
+        for (const chain of chains) {
+            await setupSelectors(chain)
+        }
+        for (const chain of chains) {
+            await connectContracts(chain)
+        }
     }
 
 
     return (
         <div className="rounded-lg md:w-[50%]">
-            <Button onClick={play}>
+            {/* <Button onClick={play}>
                 Play
-            </Button>
+            </Button> */}
 
-            {error && <AlertDestructive message={error} />}
+            {error && <AlertBanner variant="destructive" message={error} />}
+
+            {receipt && <AlertBanner message={receipt} />}
+            {error && <AlertBanner variant="destructive" message={error} />}
             <div className="flex flex-col space-y-2">
                 <Label message="Reciever" className="" />
                 <Input placeholder="0x" onChange={(e) => setReceiver(e.target.value)}
@@ -304,12 +336,11 @@ export function TransferDashboard({
                 <DataRow title="To" value={getNetworkNameFromChainID(toChain)} icon={<ArrowRight size={12} />} />
             </div>
 
-            {canUseOracle && chainId &&
-                <div>Note: {getNetworkNameFromChainID(chainId?.toString())}
-                    Doesn&apos;t have Support becuase they are incompatible with Chainlink Functions and Automation.
-                    LinkSwap will verified the validation offchain and use the CCIP directly. You may need to
-                    sign the transaction to allow the contract to transfer the token on your behalf.
-                </div>}
+            {!canUseOracle && chainId && <AlertBanner
+                variant="warning"
+                message="Chainlink Function validation not supported. Cross-chain transfers are handled directly off-chain via CCIP. No impact on flow. Supported on Fuji, Amoy, Sepolia, and Optimism Sepolia."
+            />}
+
             <div className="flex">
                 <Button className="w-full my-2"
                     onClick={handleTransfer}

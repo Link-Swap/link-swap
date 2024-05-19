@@ -48,7 +48,7 @@ export const chains: Record<string, CCIP> = {
             chainSelector: "13264668187771770619",
         },
         linkAddress: "0x84b9B910527Ad5C03A9Ca831909E21e236EA7b06",
-        ccipContract: "",
+        ccipContract: "0xb1a8ED6906bD10895Ae7D96569A0310e47c85Be5",
     },
     [ChainID.ETHEREUM_SEPOLIA]: {
         ccip: {
@@ -64,7 +64,12 @@ export const chains: Record<string, CCIP> = {
             ],
         },
         linkAddress: "0x779877a7b0d9e8603169ddbd7836e478b4624789",
-        ccipContract: "",
+        ccipContract: "0xE42362e2C2226A881070C48e57f6Cd10748E1dF6",
+        automation: {
+            upkeeper: "0x9c5c014A81d79f86D946141bdFda5DEEE25Fc3F1",
+            link: "https://automation.chain.link/sepolia/0x77df81c34c71b559530ef3a76204708f4c8fa0b7c69efba1178a28b7f1fad56e",
+            active: true,
+        }
     },
     [ChainID.ARBITRUM_SEPOLIA]: {
         ccip: {
@@ -80,7 +85,7 @@ export const chains: Record<string, CCIP> = {
             ],
         },
         linkAddress: "0xb1D4538B4571d411F07960EF2838Ce337FE1E80E",
-        ccipContract: "",
+        ccipContract: "0x26EF677d60e6715bD052eB5BdB080A8E033e1C17",
     },
     [ChainID.BASE_SEPOLIA]: {
         ccip: {
@@ -120,7 +125,12 @@ export const chains: Record<string, CCIP> = {
             ],
         },
         linkAddress: "0x73B77a6c134d8666e0aBB7Dc150c8708DBDF41E4",
-        ccipContract: "",
+        ccipContract: "0x1d967071A97597EeD3c10647EEcd86DE69feab61",
+        automation: {
+            upkeeper: "0x322600C0F4DF1702AA8108766D3d21c9FcD53459",
+            link: "https://automation.chain.link/optimism-sepolia/111047010698950747189923764658385864947093431387436204609844010449677308529582",
+            active: true,
+        }
     },
     [ChainID.WEMIX_TESTNET]: {
         ccip: {
@@ -136,7 +146,7 @@ export const chains: Record<string, CCIP> = {
             chainSelector: "8871595565390010547",
         },
         linkAddress: "0xDCA67FD8324990792C0bfaE95903B8A64097754F",
-        ccipContract: "",
+        ccipContract: "0xeDd5e3333fe570cc54a3d6e26DD009de571126AD",
     },
     [ChainID.POLYGON_AMOY]: {
         ccip: {
@@ -159,6 +169,14 @@ export const chains: Record<string, CCIP> = {
             active: true,
         }
     },
+    [ChainID.CELO_ALFAJORES]: {
+        ccip: {
+            routerAddress: "0x57117e2c867503843783544b6A57aE14202eF9d1",
+            chainSelector: "3552045678561919002",
+        },
+        linkAddress: "0x32E08557B14FaD8908025619797221281D439071",
+        ccipContract: "0x0c2549DB92613ED09AC65aE467bFc60Da7e6910C",
+    },
 }
 
 export const getCCIPChains = () => {
@@ -172,3 +190,5 @@ export const getCCIPChains = () => {
 export const getCCIPContract = (chain: string) => chains[chain] || null
 
 export const hasUpkeeper = (chain: string) => chains[chain]?.automation?.active || false
+
+export const getUpKeeper = (chain: string) => chains[chain]?.automation?.upkeeper || ""
