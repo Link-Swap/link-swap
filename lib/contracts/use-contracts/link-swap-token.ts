@@ -3,24 +3,16 @@ import { getClient } from "@/lib/evm/client";
 import { getContract, zeroAddress } from "viem";
 import { abi } from "../abi/link-swap-token";
 
-export const getLinkSwapAddress = (chain: string) => {
-    switch (chain) {
-        case ChainID.AVALANCHE_FUJI:
-            return "0x6E91F576DEda25aD0CfE19C23aEf953c2eA59413";
-        case ChainID.ETHEREUM_SEPOLIA:
-            return "0xa662f46804ab3ab3c764c81fe9c063ef811fae70";
-        case ChainID.BASE_SEPOLIA:
-            return "0x608D532b14A1070577f01288e5FF3acC5E7F4798";
-        case ChainID.POLYGON_AMOY:
-            return "0xfeB362F2148F1303ea6Bf026d32071EA295e25ac";
-        case ChainID.OPTIMISM_SEPOLIA:
-            return "0xfeB362F2148F1303ea6Bf026d32071EA295e25ac";
-        case ChainID.ARBITRUM_SEPOLIA:
-            return "0xfeB362F2148F1303ea6Bf026d32071EA295e25ac";
-        default:
-            return "";
-    }
+export const LSWAP_ADDRESS: Record<string, string> = {
+    [ChainID.AVALANCHE_FUJI]: "0x6E91F576DEda25aD0CfE19C23aEf953c2eA59413",
+    [ChainID.POLYGON_AMOY]: "0xfeB362F2148F1303ea6Bf026d32071EA295e25ac",
+    [ChainID.ETHEREUM_SEPOLIA]: "0xa662f46804ab3ab3c764c81fe9c063ef811fae70",
+    [ChainID.BASE_SEPOLIA]: "0x608D532b14A1070577f01288e5FF3acC5E7F4798",
+    [ChainID.OPTIMISM_SEPOLIA]: "0xfeB362F2148F1303ea6Bf026d32071EA295e25ac",
+    [ChainID.ARBITRUM_SEPOLIA]: "0xfeB362F2148F1303ea6Bf026d32071EA295e25ac",
+    [ChainID.BNB_TESTNET]: "0xfeB362F2148F1303ea6Bf026d32071EA295e25ac",
 }
+export const getLinkSwapAddress = (chain: string) => LSWAP_ADDRESS[chain] || "";
 
 export class LinkSwapTokenContract {
     contract: any;

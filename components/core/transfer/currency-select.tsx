@@ -46,8 +46,14 @@ export function CurrencySelect({ }: CurrencySelectProps) {
         (async () => {
             setIsLoading(true)
 
+
             try {
                 const fromChain = chainId?.toString() || ""
+
+                if (!toChain || !fromChain) {
+                    setIsLoading(false)
+                    return;
+                }
 
                 const fromListContract = getTokenListContract(fromChain)
                 const toListContract = getTokenListContract(toChain)
@@ -148,29 +154,32 @@ export function CurrencySelect({ }: CurrencySelectProps) {
                 ? <div>Waiting to load tokens</div>
                 : <div className="flex space-x-2">
                     {tokens.map((token) => {
-                        return <HoverCard key={token.tokenId} openDelay={0}>
-                            <HoverCardTrigger>
-                                <div className={cn("cursor-pointer min-h-[36px] h-[36px] px-3 text-sm rounded-xl bg-grayscale-025",
-                                    "flex items-center justify-center space-x-2",
-                                    selectedToken.tokenId === token.tokenId && "bg-grayscale-250"
-                                )}
-                                    onClick={() => handleOnClick(token)}>
-                                    <Image src={getTokenIcon(token.symbol)} alt="token" width={16} height={16} />
-                                    <div>
-                                        {token.symbol}
-                                        {compatibleList[token.tokenId.toString()] && "✓"}
-                                    </div>
-                                </div>
-                            </HoverCardTrigger>
-                            <HoverCardContent>
-                                {token.name}
+                        return <>
+                            {compatibleList[token.tokenId.toString()] &&
+                                <HoverCard key={token.tokenId} openDelay={0}>
+                                    <HoverCardTrigger>
+                                        <div className={cn("cursor-pointer min-h-[36px] h-[36px] px-3 text-sm rounded-xl bg-grayscale-025",
+                                            "flex items-center justify-center space-x-2",
+                                            selectedToken.tokenId === token.tokenId && "bg-grayscale-250",
+                                            !compatibleList[token.tokenId.toString()] && "cursor-not-allowed",
+                                        )}
+                                            onClick={() => handleOnClick(token)}>
+                                            <Image src={getTokenIcon(token.symbol)} alt="token" width={16} height={16} />
+                                            <div>
+                                                {token.symbol}
+                                            </div>
+                                        </div>
+                                    </HoverCardTrigger>
+                                    <HoverCardContent>
+                                        {token.name}
 
-                                <div className="flex justify-between items-center">
-                                    {token.tokenAddress.slice(0, 8)}...
-                                    <CopyText payload={token.tokenAddress} />
-                                </div>
-                            </HoverCardContent>
-                        </HoverCard>
+                                        <div className="flex justify-between items-center">
+                                            {token.tokenAddress.slice(0, 8)}...
+                                            <CopyText payload={token.tokenAddress} />
+                                        </div>
+                                    </HoverCardContent>
+                                </HoverCard>}
+                        </>
                     })}
                     {tokens.length === 0 && <div>No TokenList for {toChain}</div>}
                 </div>}

@@ -3,47 +3,24 @@ import { getClient, getMetamaskClient } from "@/lib/evm/client";
 import { getContract } from "viem";
 import { abi } from "../abi/chainlink-functions";
 
-const getAddress = (chain: string) => {
-    switch (chain) {
-        case ChainID.AVALANCHE_FUJI:
-            return "0x0feeff9505c18521b4e053ba4fec9cc2a387ccc0";
-        case ChainID.BASE_SEPOLIA:
-            return "0x6aF056A98F8E141fBa40DD89FFb74aA6e9f05355";
-        case ChainID.ETHEREUM_SEPOLIA:
-            return "";
-        case ChainID.POLYGON_AMOY:
-            return "0xC83713aF92509eb5bC4ec7647755cE559ad90d42";
-        case ChainID.OPTIMISM_SEPOLIA:
-            return "0xfb0Dba2816b87386fA236B224898fc91946F5ADD";
-        case ChainID.ARBITRUM_SEPOLIA:
-            return "0xfb0Dba2816b87386fA236B224898fc91946F5ADD";
-        default:
-            return "";
-    }
+const FUNCTIONS_ADDRESS: Record<string, string> = {
+    [ChainID.AVALANCHE_FUJI]: "0x49c98D6f68d172AC33E68Fb9EE1cFc572424E1AF",
+    [ChainID.POLYGON_AMOY]: "0x954F6444716f08Bc8E8De546AAb787adaBCD8BBE",
+    [ChainID.ETHEREUM_SEPOLIA]: "",
+    [ChainID.BASE_SEPOLIA]: "",
+    [ChainID.OPTIMISM_SEPOLIA]: "",
+    [ChainID.ARBITRUM_SEPOLIA]: "",
+    [ChainID.BNB_TESTNET]: "",
 }
+const getAddress = (chain: string) => FUNCTIONS_ADDRESS[chain] || "";
 
-const getSubscriptionId = (chain: string) => {
-    switch (chain) {
-        case ChainID.BASE_SEPOLIA:
-            return 42;
-        case ChainID.ETHEREUM_SEPOLIA:
-            return 2697;
-        case ChainID.AVALANCHE_FUJI:
-            return 8064;
-        case ChainID.POLYGON_AMOY:
-            return 202;
-        case ChainID.OPTIMISM_SEPOLIA:
-            return 186;
-        case ChainID.ARBITRUM_SEPOLIA:
-            return 64;
-        default:
-            return 0;
-    }
+const SUBSCRIPTION_ID: Record<string, number> = {
+    [ChainID.AVALANCHE_FUJI]: 8064,
+    [ChainID.POLYGON_AMOY]: 202,
 }
+const getSubscriptionId = (chain: string) => SUBSCRIPTION_ID[chain] || 0
 
 const callbackGasLimit = 300_000;
-// const callbackGasLimit = 400_000;
-
 export class FunctionsConsumerContract {
     contract: any;
     client: any;

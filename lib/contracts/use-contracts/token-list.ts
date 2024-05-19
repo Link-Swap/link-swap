@@ -4,24 +4,17 @@ import { getContract, zeroAddress } from "viem";
 import { abi } from "../abi/token-list";
 import { abi as IERC20 } from "@/lib/abi/ierc-20";
 
-const getAddress = (chain: string) => {
-    switch (chain) {
-        case ChainID.AVALANCHE_FUJI:
-            return "0xa1f384C7C4870cB9Ce83bf506029a6258F223B9b";
-        case ChainID.ETHEREUM_SEPOLIA:
-            return "0x755261cd44Bc905CaB714d349f41b10f6Fb5a40e";
-        case ChainID.BASE_SEPOLIA:
-            return "0xc22dDc2EFeD83D99410b9296058401B2f9A4a177";
-        case ChainID.POLYGON_AMOY:
-            return "0xA96Ebd09F44f1ca1B4d5897FF98eDD1EA9D90590";
-        case ChainID.OPTIMISM_SEPOLIA:
-            return "0xA96Ebd09F44f1ca1B4d5897FF98eDD1EA9D90590";
-        case ChainID.ARBITRUM_SEPOLIA:
-            return "0xD9F812433Dd5ce28f7b7aD7b8FF189B65127C847";
-        default:
-            return "";
-    }
+export const TOKENLIST_ADDRESS: Record<string, string> = {
+    [ChainID.AVALANCHE_FUJI]: "0xa1f384C7C4870cB9Ce83bf506029a6258F223B9b",
+    [ChainID.POLYGON_AMOY]: "0xA96Ebd09F44f1ca1B4d5897FF98eDD1EA9D90590",
+    [ChainID.ETHEREUM_SEPOLIA]: "0x755261cd44Bc905CaB714d349f41b10f6Fb5a40e",
+    [ChainID.BASE_SEPOLIA]: "0xc22dDc2EFeD83D99410b9296058401B2f9A4a177",
+    [ChainID.OPTIMISM_SEPOLIA]: "0xA96Ebd09F44f1ca1B4d5897FF98eDD1EA9D90590",
+    [ChainID.ARBITRUM_SEPOLIA]: "0xD9F812433Dd5ce28f7b7aD7b8FF189B65127C847",
+    [ChainID.BNB_TESTNET]: "0xD9F812433Dd5ce28f7b7aD7b8FF189B65127C847",
 }
+
+const getAddress = (chain: string) => TOKENLIST_ADDRESS[chain] || "";
 
 export class LinkSwapTokenListContract {
     contract: any;

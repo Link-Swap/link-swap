@@ -15,7 +15,7 @@ import { LinkSwapTokenContract } from "@/lib/contracts/use-contracts/link-swap-t
 import Image from "next/image";
 
 const nullToken = { tokenId: 0, symbol: "" } as TokenInfoPlus;
-const linkSwapTokens = [1, 6]
+const linkSwapTokens = [1, 5, 6]
 
 export interface FaucetComponentProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }

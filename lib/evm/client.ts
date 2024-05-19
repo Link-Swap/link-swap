@@ -4,7 +4,7 @@ import { EthereumProvider } from '@walletconnect/ethereum-provider'
 import { ChainID, getRPC } from '../chains'
 
 // Dumb design by veim!
-const getVeimChain = (chain: string) => {
+export const getVeimChain = (chain: string) => {
     switch (chain) {
         case ChainID.AVALANCHE_FUJI:
             return avalancheFuji

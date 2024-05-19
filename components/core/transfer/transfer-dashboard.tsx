@@ -6,7 +6,7 @@ import { useSwapCurrency } from "@/components/core/provider/currency-select-prov
 import { PoweredBy } from "@/components/core/components/powered-by"
 import { useEffect, useState } from "react"
 import { useAccount } from "wagmi"
-import { getNetworkNameFromChainID } from "@/lib/chains"
+import { ChainID, getIconByChainId, getNetworkNameFromChainID } from "@/lib/chains"
 import { TransferCard } from "./transfer-card"
 import { LinkSwapTokenListContract } from "@/lib/contracts/use-contracts/token-list"
 import { LinkSwapTokenContract } from "@/lib/contracts/use-contracts/link-swap-token"
@@ -14,11 +14,20 @@ import { getClient, getMetamaskClient } from "@/lib/evm/client"
 import { Label } from "../components/label"
 import { Input } from "../components/input"
 import { decodeAbiParameters, isAddress, parseAbiParameters } from "viem"
-import { getCCIPContract } from "@/lib/price/ccip"
+import { getCCIPContract, hasUpkeeper } from "@/lib/price/ccip"
 import { useToast } from "@/components/ui/use-toast"
 import { FunctionsConsumerContract } from "@/lib/contracts/use-contracts/chainlink-functions"
 import { CCIPMessageParserContract } from "@/lib/contracts/use-contracts/ccip-data-parser"
 import { abi } from "@/lib/contracts/abi/token-transfer"
+import { CCIPTokenTransferContract } from "@/lib/contracts/use-contracts/chainlink-ccip"
+import { FunctionDataParserContract } from "@/lib/contracts/use-contracts/functions-parser"
+import { connectContracts } from "@/lib/scripts/2-connect-contracts"
+import Image from "next/image"
+import { ArrowLeft, ArrowRight, ArrowUpLeftFromSquareIcon, CircleDollarSign } from "lucide-react"
+import { CopyText } from "../components/copy-text"
+import { deployCCIPContract } from "@/lib/scripts/0-deploy-contracts"
+import { setupSelectors } from "@/lib/scripts/1-setup-selectors"
+import { AlertDestructive } from "../components/alert-desctructive"
 
 interface TransferDashboardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
@@ -35,19 +44,40 @@ export function TransferDashboard({
     const [isSwapDisabled, setIsSwapDisabled] = useState<boolean>(false)
     const [btnText, setBtnText] = useState<string>("")
 
+    const [error, setError] = useState<string>("")
+    const [receipt, setReceipt] = useState<string>("")
+
     useEffect(() => {
         if (address)
             setReceiver(address)
     }, [])
 
+
+    const [canUseOracle, setCanUseOracle] = useState<boolean>(false)
+
+    useEffect(() => {
+        if (!chainId) {
+            return;
+        }
+
+        setCanUseOracle(false)
+        if (hasUpkeeper(chainId.toString())) {
+            setCanUseOracle(true)
+        }
+    }, [chainId])
+
     const handleTransfer = async () => {
         try {
+            setError("")
+            setReceipt("")
             setIsSwapDisabled(true)
+
             setBtnText("Validating funds...")
 
             await doTransfer()
         } catch (error: any) {
             console.error(error)
+            setError(error.toString())
             toast({
                 title: "Error",
                 description: error.toString(),
@@ -83,17 +113,17 @@ export function TransferDashboard({
         //#region Get CCIP and Token Contract
         const ccipAddress = getCCIPContract(fromChain)
         if (!ccipAddress.ccipContract) {
-            console.error("Chain Not Supported")
-            return
+            throw new Error("Chain Not Supported")
         }
 
         const contract = new LinkSwapTokenListContract({
             chain: fromChain
         })
         const fromToken = await contract.getTokenWithInfo(toCurrency.tokenId);
-        console.log(fromToken);
 
         const client = await getMetamaskClient();
+        const publicClient = getClient(fromChain);
+
         const fromTokenContract = new LinkSwapTokenContract({
             chain: fromChain,
             client: { public: client, wallet: client },
@@ -106,20 +136,28 @@ export function TransferDashboard({
         const valueBigInt = BigInt(value)
         const userBalance = await fromTokenContract.balanceOf(address) as bigint;
         if (userBalance < valueBigInt) {
-            console.error("Insufficient Funds")
-            return
+            throw new Error("Insufficient Funds")
         }
+        //#endregion
+
+        setBtnText("Building CCIP Data...")
+        //#region Need to approve token amount
+        const parser = new CCIPMessageParserContract({});
+        const payload = await parser.pack(receiver, fromToken.tokenId, value);
+        const ccipPackedData = payload.toString();
+        console.log("CCIP Data: ", ccipPackedData)
         //#endregion
 
         setBtnText("Approving...")
         //#region Need to approve token amount
         const allowanceBalance = await fromTokenContract.allowance(receiver, ccipAddress.ccipContract) as bigint;
-
+        // console.log("Allowance: ", allowanceBalance, valueBigInt)
         if (allowanceBalance < valueBigInt) {
             const smallUnitValue = value.toLocaleString('fullwide', { useGrouping: false })
             const tx = await fromTokenContract.approve(
                 ccipAddress.ccipContract,
                 smallUnitValue)
+            const transaction = await publicClient.waitForTransactionReceipt({ hash: tx })
             console.log(tx);
 
             toast({
@@ -129,17 +167,62 @@ export function TransferDashboard({
         }
         //#endregion
 
-        setBtnText("Building CCIP Data...")
-        //#region Need to approve token amount
-        const parser = new CCIPMessageParserContract({});
-        const payload = await parser.pack(receiver, fromToken.tokenId, value);
-        const ccipPackedData = payload.toString();
-        console.log(ccipPackedData)
-        toast({
-            title: "Success",
-            description: `Sending CCIP Data: ${ccipPackedData}`,
-        })
-        //#endregion
+        if (!hasUpkeeper(fromChain)) {
+            console.log("Chain doesn't support on chain validation")
+            console.log("Verifying off chain ...")
+
+            const response = await fetch("/api/functions", {
+                method: "POST",
+                body: JSON.stringify({
+                    destination: toChain,
+                    ccipData: ccipPackedData,
+                }),
+            })
+            const data = await response.json();
+            console.log("Response: ", data)
+
+            if (data.message) {
+                throw new Error(data.message)
+            }
+
+            if (!data.result) {
+                throw new Error("Failed to verify")
+            }
+
+            setBtnText("Approving CCIP...")
+            const ccipContract = new CCIPTokenTransferContract({
+                chain: fromChain,
+                client: { public: client, wallet: client, },
+            })
+
+            const isAllowed = await ccipContract.allowListedAddress(address);
+            // If not allowed then we must set the address for future token transfer
+            if (!isAllowed) {
+                const tx = await ccipContract.allowlistAddress(address);
+
+                const publicClient = getClient(fromChain);
+                const transaction = await publicClient.waitForTransactionReceipt({ hash: tx })
+                toast({
+                    title: "Success",
+                    description: `CCIP Approved, this is a one time process.`,
+                })
+            }
+
+            // This should call the CCIP contracts sendPAyLink function
+            const parse = new FunctionDataParserContract({});
+            const ccipArgs = await parse.unpack(data.result);
+            console.log("Args: ", ccipArgs.destinationChainSelector.toString(), ccipArgs.receiver, ccipPackedData, address);
+
+            const tx = await ccipContract.sendMessagePayLINK(ccipArgs.destinationChainSelector.toString(), ccipArgs.receiver, ccipPackedData, address);
+            const transaction = await publicClient.waitForTransactionReceipt({ hash: tx })
+            setReceipt(tx)
+
+            toast({
+                title: "Success",
+                description: `Approved to call Token Transfer ${tx}`,
+            })
+            return;
+        }
 
         setBtnText("Transferring using CCIP...")
         //#region Need to approve token amount
@@ -185,38 +268,52 @@ export function TransferDashboard({
 
     const play = async () => {
         // const data = "000100056bc75e2d63100000a327f039b95703fa84d507e7338fb680d2bef4470000000000000000000000000000000000000000000000000000000000000060000000000000000000000000a327f039b95703fa84d507e7338fb680d2bef4470000000000000000000000000000000000000000000000000000000000000044323135383236393938363837363734363732343530313634303837303830343235353736373837393536373330353737393838353534303832353536323736383336313300000000000000000000000000000000000000000000000000000000"
-        const data = "a77f0758bc576fd6358c7ca80efe34e54b5448288159ba9edd3ce3657e28439c";
+        // const data = "de411e866e0d27ce0f84793b395efea6cd48993ca8e26a008e118e8fdae1ac1d";
 
-        const values = decodeAbiParameters(
-            // parseAbiParameters('uint256 ccipData, bytes ccipArgs, address payer'),
-            parseAbiParameters('bytes32 message'),
-            `0x${data}`
-        )
+        // const values = decodeAbiParameters(
+        //     // parseAbiParameters('uint256 ccipData, bytes ccipArgs, address payer'),
+        //     parseAbiParameters('bytes32 message'),
+        //     `0x${data}`
+        // )
 
-        console.log(values)
+        // console.log(values)
+
+        // await deployCCIPContract(ChainID.POLYGON_AMOY)
+        await setupSelectors(ChainID.BASE_SEPOLIA)
+        await connectContracts(ChainID.BASE_SEPOLIA)
     }
 
-    return (
-        <div className="rounded-lg">
 
+    return (
+        <div className="rounded-lg md:w-[50%]">
             <Button onClick={play}>
                 Play
             </Button>
+
+            {error && <AlertDestructive message={error} />}
             <div className="flex flex-col space-y-2">
                 <Label message="Reciever" className="" />
                 <Input placeholder="0x" onChange={(e) => setReceiver(e.target.value)}
                     value={receiver} />
                 <TransferCard />
             </div>
-            <div>
-                <DataRow title="From" value={getNetworkNameFromChainID(chainId?.toString() || "")} />
-                <DataRow title="To" value={getNetworkNameFromChainID(toChain)} />
+            <div className="border border-border rounded-2xl divide-y divide-border my-2">
+                <DataRow title="Sending" value={receiver} icon={<ArrowRight size={12} />} />
+                <DataRow title={toCurrency?.name || ""} value={`${toValue.toString() || "0"} ${toCurrency?.symbol || ""}`} icon={<CircleDollarSign size={12} />} />
+                <DataRow title="From" value={getNetworkNameFromChainID(chainId?.toString() || "")} icon={<ArrowLeft size={12} />} />
+                <DataRow title="To" value={getNetworkNameFromChainID(toChain)} icon={<ArrowRight size={12} />} />
             </div>
 
+            {canUseOracle && chainId &&
+                <div>Note: {getNetworkNameFromChainID(chainId?.toString())}
+                    Doesn&apos;t have Support becuase they are incompatible with Chainlink Functions and Automation.
+                    LinkSwap will verified the validation offchain and use the CCIP directly. You may need to
+                    sign the transaction to allow the contract to transfer the token on your behalf.
+                </div>}
             <div className="flex">
-                <Button className="my-2"
+                <Button className="w-full my-2"
                     onClick={handleTransfer}
-                    disabled={isSwapDisabled}
+                    disabled={isSwapDisabled || !chainId}
                 >
                     {btnText || "Transfer"}
                 </Button>
@@ -224,12 +321,6 @@ export function TransferDashboard({
 
             <div className="flex justify-center items-center my-2">
                 <PoweredBy />
-            </div>
-
-
-            <div className="bg-grayscale-025">
-
-
             </div>
         </div>
     )
@@ -239,15 +330,19 @@ interface PreviewInfo {
     title: string;
     value: string;
     copy?: boolean;
+    icon?: React.ReactNode;
 }
-const DataRow = ({ title, value, }: PreviewInfo) => {
-    return <div className="flex items-center justify-between">
-        <div>
+const DataRow = ({ title, value, copy, icon }: PreviewInfo) => {
+    return <div className="flex items-center justify-between px-3 py-2 text-sm">
+        <div className="flex items-center gap-2">
+            {icon && icon}
             {title}
         </div>
 
         <div>
             {value}
+            {copy &&
+                <CopyText payload={value} />}
         </div>
     </div>
 }

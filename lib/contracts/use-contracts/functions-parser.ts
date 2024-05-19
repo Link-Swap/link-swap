@@ -33,4 +33,13 @@ export class FunctionDataParserContract {
     async packAsBytesMemory(destinationChainSelector: string, receiver: string) {
         return await this.contract.read.packAsBytesMemory([destinationChainSelector, receiver]);
     }
+
+    async unpack(data: string) {
+        return await this.contract.read.parse([data]) as any;
+    }
+}
+
+export interface CCIPArgs {
+    destinationChainSelector: BigInt;
+    receiver: string;
 }

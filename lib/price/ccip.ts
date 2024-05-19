@@ -35,10 +35,10 @@ export const chains: Record<string, CCIP> = {
             ],
         },
         linkAddress: "0x0b9d5D9136855f6FEc3c0993feE6E9CE8a297846",
-        ccipContract: "0xDbBe28E3f82cb7FE549759f4365545Aaf4d216e8",
+        ccipContract: "0x140Fc5EE41087B22EB03d009Ba76b74B22a298E3",
         automation: {
-            upkeeper: "0x76baB8bE3658942054Af2EeaDC7DB5975E00E7eA",
-            link: "https://automation.chain.link/fuji/32708311151030418577197145235417177243639252957486060249064829418775900977903",
+            upkeeper: "0xeFeE8e974e292359CF1ec2256c1e3cC9F6ff1497",
+            link: "https://automation.chain.link/fuji/94257710705889246379756109269032191874048012760552136305752133164746108811577",
             active: true,
         }
     },
@@ -80,7 +80,7 @@ export const chains: Record<string, CCIP> = {
             ],
         },
         linkAddress: "0xb1D4538B4571d411F07960EF2838Ce337FE1E80E",
-        ccipContract: "0x11f00b9fcefc58cdFe2FFD311c4aB490d964f3C0",
+        ccipContract: "",
     },
     [ChainID.BASE_SEPOLIA]: {
         ccip: {
@@ -96,7 +96,7 @@ export const chains: Record<string, CCIP> = {
             ],
         },
         linkAddress: "0xE4aB69C077896252FAFBD49EFD26B5D171A32410",
-        ccipContract: "0x18b5500A6a66698275aE0286e57aa03e0B2cF49E",
+        ccipContract: "0x53B10f104a0739667504964F9b4BBaF286161307",
     },
     [ChainID.KROMA_SEPOLIA]: {
         ccip: {
@@ -119,13 +119,8 @@ export const chains: Record<string, CCIP> = {
                 "https://02.functions-gateway.testnet.chain.link/",
             ],
         },
-        linkAddress: "0xE4aB69C077896252FAFBD49EFD26B5D171A32410",
-        ccipContract: "0x11f00b9fcefc58cdFe2FFD311c4aB490d964f3C0",
-        automation: {
-            upkeeper: "0x0dF53a10843657242b8276FFd6260d5fC8c0a55C",
-            link: "https://automation.chain.link/optimism-sepolia/6130101799757351563254093353829054416896800108017164536724838508404442701659",
-            active: true,
-        }
+        linkAddress: "0x73B77a6c134d8666e0aBB7Dc150c8708DBDF41E4",
+        ccipContract: "",
     },
     [ChainID.WEMIX_TESTNET]: {
         ccip: {
@@ -157,7 +152,12 @@ export const chains: Record<string, CCIP> = {
             ],
         },
         linkAddress: "0x0Fd9e8d3aF1aaee056EB9e802c3A762a667b1904",
-        ccipContract: "0xD8fb42CdFE99e2f448c652Eb8d1DF33618a9ee3C",
+        ccipContract: "0x87Bca54F5e4D8DfC7C66d28441F815926BA21192",
+        automation: {
+            upkeeper: "0xeFeE8e974e292359CF1ec2256c1e3cC9F6ff1497",
+            link: "https://automation.chain.link/polygon-amoy/0xf45aea7c9c5b009a71ca6f76bb3d610cece91bbfbad706bdd1c6fa166089642e",
+            active: true,
+        }
     },
 }
 
@@ -165,8 +165,10 @@ export const getCCIPChains = () => {
     return Object.keys(chains).map((chain) => ({
         value: chain,
         label: getNetworkNameFromChainID(chain),
-        disabled: !chains[chain].functions,
+        disabled: !chains[chain].ccipContract,
     }));
 }
 
 export const getCCIPContract = (chain: string) => chains[chain] || null
+
+export const hasUpkeeper = (chain: string) => chains[chain]?.automation?.active || false

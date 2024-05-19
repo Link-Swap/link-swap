@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { ChevronsUpDown } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import {
     Command,
     CommandEmpty,
@@ -19,14 +19,18 @@ import {
 import { getCCIPChains } from "@/lib/price/ccip"
 import Image from "next/image"
 import { ChainID, getIconByChainId } from "@/lib/chains"
+import { ChainDisplay } from "./chain-display"
+import { cn } from "@/lib/utils"
 
 interface ChainSelectProps extends React.HTMLAttributes<HTMLDivElement> {
     handleSelect: Function;
+    title?: string;
 }
 
 const chains = getCCIPChains()
 export function ChainSelect({
-    handleSelect
+    handleSelect,
+    title
 }: ChainSelectProps) {
     const [open, setOpen] = useState(false)
     const [value, setValue] = useState(ChainID.ETHEREUM_SEPOLIA as string)
@@ -37,20 +41,11 @@ export function ChainSelect({
 
     return <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-            <Button
-                variant="outline"
-                role="combobox"
-                aria-expanded={open}
-                className="w-[200px] justify-between bg-grayscale-100"
-            >
+            <button className={cn("flex gap-2 items-center", buttonVariants({ variant: "ghost" }))}>
                 {value &&
-                    <Image src={getIconByChainId(value)} alt={value} width={16} height={16} />}
-
-                {value
-                    ? chains.find((framework) => framework.value === value)?.label
-                    : "Select chain"}
+                    <ChainDisplay chainId={value} className="flex gap-2 items-center" title={title} />}
                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-            </Button>
+            </button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">
             <Command>

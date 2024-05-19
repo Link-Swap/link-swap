@@ -32,6 +32,11 @@ export function AmountInput({
         if (type === "transfer") {
             setToValue(Number(value))
         }
+
+        console.log("toCurrency", toCurrency, value, from)
+        if (!toCurrency || value === "0" || value === "0.0") {
+            return;
+        }
         await getTotal(Number(value), from)
     }
 
