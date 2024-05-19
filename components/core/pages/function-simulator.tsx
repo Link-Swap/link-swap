@@ -81,7 +81,6 @@ export function FunctionSimulator({ }: FunctionSimulatorProps) {
         const consumer = new FunctionsConsumerContract({
             chain: (await client.getChainId()).toString(),
             client: { public: client, wallet: client, },
-
         })
 
         const tx = await consumer.sendRequest(ccipPackedData, destinationChain);

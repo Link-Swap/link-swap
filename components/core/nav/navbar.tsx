@@ -116,14 +116,21 @@ const NavMenu = () => {
             <NavigationMenuItem>
                 <Link href="/" legacyBehavior passHref>
                     <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                        Transfer
+                        Transfers
                     </NavigationMenuLink>
                 </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
                 <Link href="/swap" legacyBehavior passHref>
                     <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                        Swap
+                        Swaps
+                    </NavigationMenuLink>
+                </Link>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+                <Link href="/swap" legacyBehavior passHref>
+                    <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                        P2P Swaps
                     </NavigationMenuLink>
                 </Link>
             </NavigationMenuItem>
