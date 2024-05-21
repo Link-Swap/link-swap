@@ -34,6 +34,8 @@ export function FaucetComponent({ }: FaucetComponentProps) {
             setTokens([])
             setToken(nullToken)
 
+            if (!chainId) return;
+
             const tokenList = new LinkSwapTokenListContract({
                 chain: chainId?.toString()
             });

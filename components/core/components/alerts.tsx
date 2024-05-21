@@ -32,11 +32,12 @@ export function AlertBanner({
 
     return show ? (
         <Alert variant={variant || "default"}>
-            {alertIcon[variant || "default"]}
-            <AlertTitle>Info</AlertTitle>
-            <AlertDescription className="flex">
+            {/* {alertIcon[variant || "default"]} */}
+            <CircleX className="cursor-pointer" height={16} width={16} onClick={handleClose} />
+
+            <AlertTitle>{variant === "warning" || variant === "destructive" ? "Error" : "Info"}</AlertTitle>
+            <AlertDescription className="flex justify-between">
                 {message || ""}
-                <CircleX className="cursor-pointer" onClick={handleClose} />
             </AlertDescription>
         </Alert>
     ) : <></>;
