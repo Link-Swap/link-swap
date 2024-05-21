@@ -164,7 +164,7 @@ export const chains: Record<string, CCIP> = {
         linkAddress: "0x0Fd9e8d3aF1aaee056EB9e802c3A762a667b1904",
         ccipContract: "0x87Bca54F5e4D8DfC7C66d28441F815926BA21192",
         automation: {
-            upkeeper: "0xeFeE8e974e292359CF1ec2256c1e3cC9F6ff1497",
+            upkeeper: "0xf15808035798381b86f66e0ba544daC11b5FDccb",
             link: "https://automation.chain.link/polygon-amoy/0xf45aea7c9c5b009a71ca6f76bb3d610cece91bbfbad706bdd1c6fa166089642e",
             active: true,
         }

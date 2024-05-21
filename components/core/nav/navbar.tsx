@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/navigation-menu"
 import React from "react"
 import Link from "next/link"
+import Image from "next/image"
 
 const title = "LinkSwap"
 const components: { title: string; href: string; description: string }[] = [
@@ -56,7 +57,7 @@ export const NavBar = ({ }: NavBarProps) => {
             <div className="container flex items-center justify-between py-2">
                 <div className="flex gap-6 md:gap-10">
                     <a className="hidden items-center space-x-2 md:flex" href="/">
-                        <ArrowLeftRight height={24} className="text-primary" />
+                        <Image src="/brand/logo.svg" alt="LinkSwap" width={32} height={32} />
                         <span className="hidden font-bold sm:inline-block text-2xl">
                             {title}
                         </span>
@@ -99,7 +100,7 @@ export const NavBar = ({ }: NavBarProps) => {
                 </nav>
                 <div className="flex md:hidden">
                     <a className="flex items-center space-x-2" href="/">
-                        <ArrowLeftRight height={24} className="text-primary" />
+                        <Image src="/brand/logo.svg" alt="LinkSwap" width={32} height={32} />
                         <span className="hidden font-bold sm:inline-block text-2xl">
                             {title}
                         </span>

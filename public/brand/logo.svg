@@ -1,0 +1,49 @@
+<svg viewBox="9.8646 2.7998 41.569 48" width="41.569" height="48" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="paint0_linear_3965_20463" x1="34.3926" y1="5.99863" x2="13.6081"
+            y2="42.0014" gradientUnits="userSpaceOnUse"
+            gradientTransform="matrix(1, 0, 0, 1, 2.566217, -0.233293)">
+            <stop stop-color="#7790E2"></stop>
+            <stop offset="1" stop-color="#486DDC"></stop>
+        </linearGradient>
+    </defs>
+    <path
+        d="M 26.567 -0.233 L 5.782 11.768 L 5.782 35.766 L 26.567 47.767 L 47.351 35.766 L 47.351 11.768 L 26.567 -0.233 Z"
+        fill="url(#paint0_linear_3965_20463)"
+        transform="matrix(1, 0, 0, 1, 4.082622112074824, 3.032807156932461)"></path>
+    <g id="SvgjsG1051"
+        transform="matrix(0.103898, 0.110933, -0.093574, 0.08764, -97.078516, -101.450433)"
+        style="transform-origin: 128.012px 128.009px;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="256" height="256">
+            <defs>
+                <linearGradient id="a" x1="8.55" x2="45.26" y1="20.54" y2="20.54"
+                    gradientUnits="userSpaceOnUse">
+                    <stop offset="0" stop-color="#2357ff" class="stopColor2357ff svgShape"></stop>
+                    <stop offset="0.38" stop-color="#1b6ff6" class="stopColor1b6ff6 svgShape"></stop>
+                    <stop offset="1" stop-color="#0b9ee3" class="stopColor0b9ee3 svgShape"></stop>
+                </linearGradient>
+                <linearGradient id="b" x1="18.74" x2="55.45" y1="43.46" y2="43.46"
+                    gradientUnits="userSpaceOnUse">
+                    <stop offset="0" stop-color="#0c90f2" class="stopColor0c90f2 svgShape"></stop>
+                    <stop offset="0.14" stop-color="#1092f2" class="stopColor1092f2 svgShape"></stop>
+                    <stop offset="0.27" stop-color="#1c97f1" class="stopColor1c97f1 svgShape"></stop>
+                    <stop offset="0.4" stop-color="#2f9ff1" class="stopColor2f9ff1 svgShape"></stop>
+                    <stop offset="0.53" stop-color="#4babf0" class="stopColor4babf0 svgShape"></stop>
+                    <stop offset="0.66" stop-color="#6ebbee" class="stopColor6ebbee svgShape"></stop>
+                    <stop offset="0.78" stop-color="#99ceed" class="stopColor99ceed svgShape"></stop>
+                    <stop offset="0.85" stop-color="#b3d9ec" class="stopColorb3d9ec svgShape"></stop>
+                </linearGradient>
+            </defs>
+            <g data-name="Layer 13">
+                <path fill="#1A2B6B"
+                    d="M 57.312 25.804 L 42.652 11.104 C 38.294 6.757 31.707 7.018 27.587 10.62 C 26.03 11.981 24.826 13.819 24.227 16.066 C 23.213 19.869 24.305 23.924 27.092 26.704 L 31.772 31.384 C 32.861 32.473 34.721 31.975 35.12 30.487 C 35.305 29.796 35.108 29.06 34.602 28.554 L 29.912 23.844 C 26.098 20.03 27.843 13.516 33.053 12.12 C 35.472 11.472 38.052 12.164 39.822 13.934 L 54.522 28.634 C 58.418 32.357 56.823 38.901 51.651 40.413 C 49.511 41.039 47.202 40.608 45.432 39.254 C 44.189 38.346 42.428 39.124 42.263 40.655 C 42.187 41.365 42.495 42.062 43.072 42.484 C 49.925 47.458 59.593 43.148 60.474 34.726 C 60.819 31.428 59.657 28.149 57.312 25.804 Z"
+                    style="transform-box: fill-box; transform-origin: 50% 50%;"
+                    transform="matrix(0, 1.124912, -0.888959, 0, 0.000004, -0.000001)"></path>
+                <path fill="white"
+                    d="M 29.092 56.106 C 26.172 56.112 23.37 54.949 21.312 52.876 L 6.652 38.186 C 0.69 32.173 3.473 21.961 11.662 19.804 C 14.869 18.959 18.286 19.607 20.962 21.566 C 22.198 22.486 21.974 24.399 20.56 25.009 C 19.903 25.292 19.146 25.203 18.572 24.776 C 14.318 21.469 8.079 24.008 7.342 29.346 C 7.035 31.568 7.813 33.804 9.432 35.356 L 24.132 50.056 C 27.947 53.871 34.46 52.125 35.856 46.915 C 36.504 44.497 35.813 41.916 34.042 40.146 L 29.412 35.516 C 28.323 34.423 28.826 32.561 30.317 32.164 C 31.009 31.98 31.747 32.179 32.252 32.686 L 36.882 37.286 C 42.879 43.265 40.155 53.493 31.979 55.697 C 31.038 55.951 30.067 56.078 29.092 56.076 L 29.092 56.106 Z"
+                    style="transform-box: fill-box; transform-origin: 50% 50%;"
+                    transform="matrix(0, 1.124912, -0.888959, 0, -0.000005, -0.000008)"></path>
+            </g>
+        </svg>
+    </g>
+</svg>
