@@ -89,19 +89,14 @@ export function FunctionSimulator({ }: FunctionSimulatorProps) {
 
     return (
         <div className="">
-            <Button onClick={decodeResults}>
+            {/* <Button onClick={decodeResults}>
                 Decode
             </Button>
             <Button onClick={callOracle}>
                 Call Oracle Functions
-            </Button>
+            </Button> */}
 
             <div className="flex items-center justify-between">
-                {/* <div>
-                    <Label message="From" className="my-8" />
-                    <ChainSelect handleSelect={setSourceChain} />
-                </div> */}
-
                 <div>
                     <Label message="To" className="my-8" />
                     <ChainSelect handleSelect={setDestinationChain} />
