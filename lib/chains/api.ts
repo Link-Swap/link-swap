@@ -153,6 +153,7 @@ const data: { [key: string]: string } = {
   [ChainID.KROMA_SEPOLIA]: "https://api-sepolia.kromascan.com",
   [ChainID.POLYGON_AMOY]: "https://api-amoy.polygonscan.com",
   [ChainID.GNOSIS_CHIADO]: "https://gnosis-chiado.blockscout.com",
+  [ChainID.COTI_DEVNET]: "https://ethernal.fly.dev",
 }
 
 export const getAPI = (network: string): string => data[network] || ""

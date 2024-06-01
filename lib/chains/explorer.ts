@@ -145,6 +145,7 @@ const data: { [key: string]: string } = {
   [ChainID.KROMA_SEPOLIA]: "https://sepolia.kromascan.com",
   [ChainID.POLYGON_AMOY]: "https://amoy.polygonscan.com",
   [ChainID.GNOSIS_CHIADO]: "https://gnosis-chiado.blockscout.com",
+  [ChainID.COTI_DEVNET]: "https://explorer-devnet.coti.io",
 }
 
 export const getExplorer = (network: string): string => data[network] || ""
@@ -156,6 +157,7 @@ export const getContractExplorer = (network: string, contract: string): string =
   switch (network) {
     case ChainID.TRON_MAINNET:
     case ChainID.TRON_SHASTA_TESTNET:
+    case ChainID.COTI_DEVNET:
       addressPath = `contract/${contract}`
     case ChainID.PALM_MAINNET:
     case ChainID.PALM_TESTNET:

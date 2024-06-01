@@ -20,7 +20,7 @@ const data: { [key: string]: string } = {
     [ChainID.POLYGON_MAINNET]: "https://polygon-pokt.nodies.app",
     [ChainID.POLYGON_MUMBAI]: "https://polygon-mumbai-bor-rpc.publicnode.com",
     [ChainID.OPTIMISM_MAINNET]: "https://optimism-rpc.publicnode.com",
-    [ChainID.OPTIMISM_SEPOLIA]: "https://sepolia.optimism.io",
+    [ChainID.OPTIMISM_SEPOLIA]: "https://public.stackup.sh/api/v1/node/optimism-sepolia",
     [ChainID.FANTOM_MAINNET]: "https://rpcapi.fantom.network",
     [ChainID.FANTOM_TESTNET]: "https://rpc.testnet.fantom.network",
     [ChainID.BASE_MAINNET]: "https://1rpc.io/base",
@@ -140,6 +140,7 @@ const data: { [key: string]: string } = {
     [ChainID.KROMA_SEPOLIA]: "https://api.sepolia.kroma.network",
     [ChainID.POLYGON_AMOY]: "https://rpc-amoy.polygon.technology",
     [ChainID.GNOSIS_CHIADO]: "https://gnosis-chiado-rpc.publicnode.com/",
+    [ChainID.COTI_DEVNET]: "https://devnet.coti.io/rpc",
 }
 
 export const getRPC = (network: string): string =>

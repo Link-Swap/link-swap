@@ -141,5 +141,6 @@ export enum ChainID {
   KROMA_SEPOLIA = "2358",
   POLYGON_AMOY = "80002",
   GNOSIS_CHIADO = "10200",
+  COTI_DEVNET = "13068200",
 }
 
